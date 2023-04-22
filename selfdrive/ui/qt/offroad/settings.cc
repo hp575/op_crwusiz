@@ -744,7 +744,6 @@ CommunityPanel::CommunityPanel(QWidget* parent) : QWidget(parent) {
       QProcess::execute("/data/openpilot/panda/board/flash.sh");
     }
   });
-  toggleLayout->addWidget(pandaflash_btn);
 
   auto pandarecover_btn = new ButtonControl("Panda Recover", "RUN");
   QObject::connect(pandarecover_btn, &ButtonControl::clicked, [=]() {
@@ -752,7 +751,25 @@ CommunityPanel::CommunityPanel(QWidget* parent) : QWidget(parent) {
       QProcess::execute("/data/openpilot/panda/board/recover.sh");
     }
   });
+
+  auto pandaflash_smdps_btn = new ButtonControl("Panda Flash (Smdps)", "RUN");
+  QObject::connect(pandaflash_btn, &ButtonControl::clicked, [=]() {
+    if (ConfirmationDialog::confirm(tr("Process?"), this)){
+      QProcess::execute("/data/openpilot/panda/board/flash_smdps.sh");
+    }
+  });
+
+  auto pandarecover_smdps_btn = new ButtonControl("Panda Recover (Smdps)", "RUN");
+  QObject::connect(pandarecover_btn, &ButtonControl::clicked, [=]() {
+    if (ConfirmationDialog::confirm(tr("Process?"), this)){
+      QProcess::execute("/data/openpilot/panda/board/recover_smdps.sh");
+    }
+  });
+
+  toggleLayout->addWidget(pandaflash_btn);
   toggleLayout->addWidget(pandarecover_btn);
+  toggleLayout->addWidget(pandaflash_smdps_btn);
+  toggleLayout->addWidget(pandarecover_smdps_btn);
 }
 
 SelectCar::SelectCar(QWidget* parent): QWidget(parent) {
